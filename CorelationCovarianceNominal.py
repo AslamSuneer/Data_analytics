@@ -46,6 +46,33 @@ print("chi^2 value:", chi)
 
 # Use a proper threshold or compare with a p-value based on degrees of freedom
 if chi > 10.8:
-    print("There is correlation")
+    print("There is correlation (Chi-Square Test)")
 else:
-    print("There is no correlation")
+    print("There is no correlation (Chi-Square Test)")
+
+# Now calculate the covariance and correlation manually
+n = len(df)  # Number of observations
+means = df.mean().tolist()  # Calculate means of each column manually
+
+# Initialize matrices
+covariance_matrix = np.zeros((c, c))
+correlation_matrix = np.zeros((c, c))
+
+# Calculate covariance
+for i in range(c):
+    for j in range(c):
+        covariance_sum = 0
+        for k in range(n):
+            covariance_sum += (df.iloc[k, i] - means[i]) * (df.iloc[k, j] - means[j])
+        covariance_matrix[i][j] = covariance_sum / (n - 1)
+
+print("\nCovariance Matrix (Manual Calculation):")
+print(covariance_matrix)
+
+# Calculate correlation
+for i in range(c):
+    for j in range(c):
+        correlation_matrix[i][j] = covariance_matrix[i][j] / (np.sqrt(covariance_matrix[i][i] * covariance_matrix[j][j]))
+
+print("\nCorrelation Matrix (Manual Calculation):")
+print(correlation_matrix)
