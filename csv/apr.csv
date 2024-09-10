@@ -1,0 +1,6 @@
+transaction id,items
+t1,'apple,orange'
+t2,'apple,milk,sugar'
+t3,'apple,milk'
+t4,'milk'
+t5,'apple,milk,sugar'
