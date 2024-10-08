@@ -38,7 +38,7 @@ def k_means_clustering(data, k, max_iterations=100):
     return labels, centroids
 
 # Read data from a CSV file
-csv_file = "your_data.csv"  # Replace with your CSV file path
+csv_file = "kmean.csv"  # Replace with your CSV file path
 df = pd.read_csv(csv_file)
 
 # Convert data to a list of lists (assuming numerical data)
