@@ -1,7 +1,7 @@
 # Step 1: Read CSV Data
-def read_csv_file(naive.csv):
+def read_csv_file(filename):
     data = []
-    with open(naive.csv, 'r') as file:
+    with open(filename, 'r') as file:
         next(file)  # Skip the header row
         for line in file:
             row = line.strip().split(',')
@@ -74,10 +74,11 @@ def naive_bayes_classifier(training_data, new_data):
     return classify(priors, likelihoods, new_data)
 
 # Main execution
-filename = 'bayes.csv'  # Name of your CSV file
+filename = 'naive.csv'  # Name of your CSV file
 training_data = read_csv_file(filename)
 
 # Classify the new data: X = (age=youth, income=medium, student=yes, credit_rating=fair)
 new_sample = ['youth', 'medium', 'yes', 'fair']
 predicted_class = naive_bayes_classifier(training_data, new_sample)
 print(f'Predicted class for {new_sample}: {predicted_class}')
+
