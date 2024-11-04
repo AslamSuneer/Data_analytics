@@ -55,16 +55,19 @@ def classify(priors, likelihoods, new_data):
     posteriors = {}
     for label in priors:
         posteriors[label] = priors[label]
+        print(f"\nClass: {label}")
+        print(f"Prior probability: {priors[label]:.4f}")
+        
         for i in range(len(new_data)):
-            if new_data[i] in likelihoods[label][i]:
-                posteriors[label] *= likelihoods[label][i][new_data[i]]
-            else:
-                posteriors[label] *= 0
+            feature_value = new_data[i]
+            feature_probability = likelihoods[label][i].get(feature_value, 0)
+            print(f"P({feature_value}|{label}) = {feature_probability:.4f}")
+            
+            posteriors[label] *= feature_probability
 
-    # Print the posterior probabilities for each class
-    for label in posteriors:
-        print(f"Posterior probability for {label}: {posteriors[label]}")
+        print(f"Posterior probability for {label}: {posteriors[label]:.4f}")
 
+    # Return the class label with the highest posterior probability
     return max(posteriors, key=posteriors.get)
 
 # Step 5: Running the classifier on new data
@@ -80,5 +83,4 @@ training_data = read_csv_file(filename)
 # Classify the new data: X = (age=youth, income=medium, student=yes, credit_rating=fair)
 new_sample = ['youth', 'medium', 'yes', 'fair']
 predicted_class = naive_bayes_classifier(training_data, new_sample)
-print(f'Predicted class for {new_sample}: {predicted_class}')
-
+print(f'\nPredicted class for {new_sample}: {predicted_class}')
