@@ -26,8 +26,8 @@ def calculate_prior_probabilities(data):
 
     return priors
 
-# Step 3: Calculate Likelihood P(feature|class)
-def calculate_likelihoods(data):
+# Step 3: Calculate Likelihood P(feature|class) with Laplace Smoothing
+def calculate_likelihoods(data, alpha=1):  # Laplace smoothing parameter alpha=1
     feature_counts = {}
     class_counts = {}
 
@@ -45,22 +45,33 @@ def calculate_likelihoods(data):
     for label in feature_counts:
         likelihoods[label] = []
         for i in range(len(feature_counts[label])):
-            likelihoods[label].append({key: feature_counts[label][i][key] / class_counts[label]
+            total_feature_count = sum(feature_counts[label][i].values())
+            unique_values = len(feature_counts[label][i])  # For Laplace smoothing
+            likelihoods[label].append({key: (feature_counts[label][i][key] + alpha) / 
+                                       (total_feature_count + alpha * unique_values)
                                        for key in feature_counts[label][i]})
 
     return likelihoods
 
 # Step 4: Classify new data and print probabilities
-def classify(priors, likelihoods, new_data):
+def classify(priors, likelihoods, new_data, alpha=1):
     posteriors = {}
     for label in priors:
-        posteriors[label] = priors[label]
+        posteriors[label] = priors[label]  # Start with the prior probability
         print(f"\nClass: {label}")
         print(f"Prior probability: {priors[label]:.4f}")
         
         for i in range(len(new_data)):
             feature_value = new_data[i]
-            feature_probability = likelihoods[label][i].get(feature_value, 0)
+            feature_likelihoods = likelihoods[label][i]
+            # Calculate total feature count with smoothing
+            unique_values = len(feature_likelihoods)
+            total_feature_count = sum(feature_likelihoods.values())
+            # Use Laplace smoothing if feature is unseen
+            feature_probability = feature_likelihoods.get(
+                feature_value,
+                alpha / (total_feature_count + alpha * unique_values)
+            )
             print(f"P({feature_value}|{label}) = {feature_probability:.4f}")
             
             posteriors[label] *= feature_probability
