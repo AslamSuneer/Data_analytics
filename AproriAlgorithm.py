@@ -73,7 +73,7 @@ def generate_rules(data, frequent_itemset, support, min_confidence):
 
 min_support = 2
 min_confidence = 0.75
-data = load_data("transactions.csv")
+data = load_data("apr.csv")
 transactions = data  # Use transactions directly
 frequent_itemsets = apriori(transactions, min_support)
 
